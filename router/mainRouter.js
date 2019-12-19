@@ -70,21 +70,14 @@ router.get("/createboundingbox", async (req, res) => {
 
     for (let i = 27; i < menJacket.length; i++) {
       let item = menJacket[i];
-      if (!item.boundingbox) {
-        try {
-          await udateImage(item);
-          console.log("Processed", i, item.id);
-        } catch (error) {
-          fs.appendFile("log.txt", `${item.id}: ${error}`, function(err) {
-            //if (err) throw err;
-            // console.log("Updated!");
-          });
-        }
-      } else {
-        console.log("Skipped", i, item.id);
-      }
+      
     }
 
+    let i = 410;
+    while (i < menJacket.length) {
+      await runBatch(menJacket, i, 20);
+      i += 20;
+    }
     //console.log(menJacket[7]);
     res.status(200).send("Ok");
   } catch (error) {
@@ -155,6 +148,39 @@ async function udateImage(item) {
       }
     }
   }
+}
+
+function updateImagePromise(item, i) {
+  return new Promise( async (resolve, reject) => {
+    if (!item.boundingbox) {
+      try {
+        await udateImage(item);
+        console.log("Processed", i, item.id);
+        resolve(item);
+      } catch (error) {
+        reject(item);
+        fs.appendFile("log.txt", `${item.id}: ${error}`, function(err) {
+          //if (err) throw err;
+          // console.log("Updated!");
+        });
+      }
+    } else {
+      resolve(item);
+      console.log("Skipped", i, item.id);
+    }
+  })
+}
+
+/* Call 20 request concurently */
+async function runBatch(arr, start, count) {
+  let buf = arr.slice(start, start + count);
+  return new Promise((resolve, reject) => {
+    Promise.allSettled(buf.map((item, index) => updateImagePromise(item, index + start)))
+    .then(result => {
+      console.log('Batch result: ', result);
+      resolve();
+    });
+  })
 }
 
 module.exports = router;

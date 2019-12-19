@@ -1,1 +1,0 @@
-5df9e93a6b993e985fc5c046: u"cannot identify image file u'/tmp/528db263-6a6d-41e6-b8fd-55a00f993385.png'"
