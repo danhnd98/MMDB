@@ -56,14 +56,16 @@ router.get("/createboundingbox", async(req, res) => {
     console.log('Loaded ', menJacket.length);
 
     // node menJacket = [menJacket[300]];
-    menJacket.forEach(async (item, index) =>  {  
+    for (let i = 0; i < menJacket.length; i++) {
+        let item = menJacket[i];
         if(!item.boundingbox){
             await udateImage(item);
-            console.log("Processed " + index);
+            console.log("Processed ", i);
         } else {
-            console.log("Skipped ", index);
+            console.log("Skipped", i);
         }
-    });
+    }
+
     res.status(200).send("Ok");
 } catch (error) {
        console.log(error); 
