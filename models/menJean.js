@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const womenTShirtSchema = new mongoose.Schema({
+const menJeanSchema = new mongoose.Schema({
     images : {
         type : mongoose.Schema.Types.Mixed
     },
@@ -27,6 +27,6 @@ const womenTShirtSchema = new mongoose.Schema({
     }
 })
 
-const WomenTShirt = new mongoose.model('Women-T-Shirt', womenTShirtSchema);
+const MenJean = mongoose.model('Men-Jean', menJeanSchema);
 
-module.exports = WomenTShirt;
+module.exports = MenJean;
