@@ -51,51 +51,65 @@ router.get("/createboundingbox", async(req, res) => {
     let cate = req.query.Category;
     console.log("Run");
     try {
-    let i = 0;
     let menJacket = await MenJacket.find();
     console.log("load done!")
-    console.log(menJacket[0])
-    menJacket.forEach(async item =>  {  
-        i++      
+    console.log('Loaded ', menJacket.length);
+
+    // node menJacket = [menJacket[300]];
+    menJacket.forEach(async (item, index) =>  {  
         if(!item.boundingbox){
-            await udateImage(item)
+            await udateImage(item);
+            console.log("Processed " + index);
+        } else {
+            console.log("Skipped ", index);
         }
-        console.log("Xử lý i" + i)
     });
-    res.status(200).send("Ok")
+    res.status(200).send("Ok");
 } catch (error) {
        console.log(error); 
        res.status(200).send("Toang, đoc console ngay đi")
 }
 })
 
-async function udateImage(image){
+function requestAlgorithia(input) {
+    return new Promise((resolve, reject) => {
+        try {
+            Algorithmia.client("simuVlTpmVZKo78cPwI121vFnPy1")
+            .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
+            .pipe(input)
+            .then(response => {
+                let data  = response.get();
+                resolve(data);
+            });
+        }
+        catch (e) {
+            reject(e);
+        }
+    })
+}
+
+async function udateImage(item){
     var input = {  
         "image": item.image_urls[0],
         "model":"mid",
         "threshold" : 0.3,
         "tags_only": true
      };
-     Algorithmia.client("simM2gZzOb1UxCiXEs1ZRJK+uFy1")
-       .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
-       .pipe(input)
-       .then(async function(response) {
-        let data  = response.get();
-        console.log(data)
-        let articles = data.articles
-        if(articles.length > 0){
-            
-            articles.sort((item1, item2) => {return item2.confidence - item1.confidence})
-            if(articles[0].article_name.indexOf("jacket") >= 0){
-                item.boundingbox = articles[0].bounding_box
-                try {
-                    await item.save(); 
-                } catch (error) {
-                    
-                }                        
-            }
+     let data = await requestAlgorithia(input);
+     console.log(data)
+    let articles = data.articles
+    if(articles.length > 0){
+        
+        articles.sort((item1, item2) => {return item2.confidence - item1.confidence})
+        if(articles[0].article_name.indexOf("jacket") >= 0){
+            item.boundingbox = articles[0].bounding_box
+            try {
+                await item.save(); 
+            } catch (error) {
+                
+            }                        
         }
-    });
+    }
 }
 
 
