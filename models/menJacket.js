@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 
 const menJacketSchema = new mongoose.Schema({
-    image : {
-        type : String,
-        required : false
+    images : {
+        type : mongoose.Schema.Types.Mixed
     },
     price_regular : {
         type: String
+    },
+    image_urls : {
+        type : mongoose.Schema.Types.Mixed
     },
     link : {
         type : String
@@ -22,6 +24,6 @@ const menJacketSchema = new mongoose.Schema({
     }
 })
 
-const MenJacket = mongoose.model('MenJacket', menJacketSchema);
+const MenJacket = mongoose.model('Men-Jacket', menJacketSchema);
 
 module.exports = MenJacket;
