@@ -1,5 +1,6 @@
 const express = require("express");
 const MenJacket = require("../models/menJacket");
+const MenJean = require("../models/menJean");
 const MenShirt = require("../models/menShirt");
 const MenShorts = require("../models/menShorts");
 const MenTrouser = require("../models/menTrouser");
@@ -58,7 +59,7 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menJacket = await MenJacket.find();
+    let menJacket = await MenJean.find();
     console.log("load done!");
     console.log("Loaded ", menJacket.length);
 
@@ -73,13 +74,47 @@ router.get("/createboundingbox", async (req, res) => {
       
     }
 
-    let i = 410;
+    let i = 0;
     while (i < menJacket.length) {
       await runBatch(menJacket, i, 20);
       i += 20;
     }
-    //console.log(menJacket[7]);
-    res.status(200).send("Ok");
+    // console.log(menJacket[7]);
+    res.status(200).send("ok");
+  } catch (error) {
+    console.log(error);
+    res.status(200).send("Toang, đoc console ngay đi");
+  }
+});
+
+router.get("/check", async (req, res) => {
+  let cate = req.query.Category;
+  console.log("Run");
+  try {
+    let menJacket = await MenJean.find();
+    console.log("load done!");
+    console.log("Loaded ", menJacket.length);
+
+    // node menJacket = [menJacket[300]];
+    fs.writeFile("log.txt", "", function(err) {
+      // if (err) throw err;
+      // console.log("Saved!");
+    });
+
+    for (let i = 27; i < menJacket.length; i++) {
+      let item = menJacket[i];
+      
+    }
+
+    let i = 0;
+    let j = 0;
+    while (i < menJacket.length) {
+      if(menJacket[i].boundingbox)
+      j++
+      i++
+    }
+    // console.log(menJacket[7]);
+    res.status(200).send(j + "/" + i);
   } catch (error) {
     console.log(error);
     res.status(200).send("Toang, đoc console ngay đi");
@@ -89,7 +124,7 @@ router.get("/createboundingbox", async (req, res) => {
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-      Algorithmia.client("simuVlTpmVZKo78cPwI121vFnPy1")
+      Algorithmia.client("simEA2shH9/qq4tLnXJ2w/P8adR1")
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
@@ -124,6 +159,7 @@ async function udateImage(item) {
   }
   console.log(data);
   let articles = data.articles;
+  console.log(articles)
   if (articles.length > 0) {
     /* 
       Khong cho sort nua
@@ -136,7 +172,7 @@ async function udateImage(item) {
     });
     */
     for (let i = 0; i < articles.length; i++) {
-      if (articles[i].article_name.indexOf("jacket") >= 0) {
+      if (articles[i].article_name.indexOf("jean") >= 0) {
         item.boundingbox = articles[i].bounding_box;
         try {
           await item.save();
@@ -182,5 +218,7 @@ async function runBatch(arr, start, count) {
     });
   })
 }
+
+
 
 module.exports = router;
