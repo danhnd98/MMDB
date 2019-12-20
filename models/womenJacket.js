@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 
 const womenJacketSchema = new mongoose.Schema({
-    image : {
-        type : String,
-        required : false
+    images : {
+        type : mongoose.Schema.Types.Mixed
     },
     price_regular : {
         type: String
+    },
+    image_urls : {
+        type : mongoose.Schema.Types.Mixed
     },
     link : {
         type : String
@@ -16,9 +18,15 @@ const womenJacketSchema = new mongoose.Schema({
     },
     title : {
         type : String
+    },
+    color : {
+        type : mongoose.Schema.Types.Mixed
+    },
+    boundingbox : {
+        type : mongoose.Schema.Types.Mixed
     }
 })
 
-const WomenJacket = new mongoose.model('WomenJacket', womenJacketSchema);
+const WomenJacket = new mongoose.model('Women-Jacket', womenJacketSchema);
 
 module.exports = WomenJacket;

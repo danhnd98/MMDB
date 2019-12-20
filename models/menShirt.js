@@ -19,11 +19,14 @@ const menShirtSchema = new mongoose.Schema({
     title : {
         type : String
     },
+    color : {
+        type : mongoose.Schema.Types.Mixed
+    },
     boundingbox : {
         type : mongoose.Schema.Types.Mixed
     }
 })
 
-const MenShirt = new mongoose.model('Men-Shirts', menShirtSchema);
+const MenShirt = new mongoose.model('Men-Shirt', menShirtSchema);
 
 module.exports = MenShirt;

@@ -1,5 +1,6 @@
 const express = require("express");
 const MenJacket = require("../models/menJacket");
+const MenJean = require("../models/menJean");
 const MenShirt = require("../models/menShirt");
 const MenSweater = require("../models/mensweater");
 const MenJeans = require("../models/menJeans");
@@ -82,8 +83,42 @@ router.get("/createboundingbox", async (req, res) => {
       await process.runBatch(menSweater, i, 20, 'sweater');
       i += 20;
     }
-    //console.log(menJacket[7]);
-    res.status(200).send("Ok");
+    // console.log(menJacket[7]);
+    res.status(200).send("ok");
+  } catch (error) {
+    console.log(error);
+    res.status(200).send("Toang, đoc console ngay đi");
+  }
+});
+
+router.get("/check", async (req, res) => {
+  let cate = req.query.Category;
+  console.log("Run");
+  try {
+    let menJacket = await MenJean.find();
+    console.log("load done!");
+    console.log("Loaded ", menJacket.length);
+
+    // node menJacket = [menJacket[300]];
+    fs.writeFile("log.txt", "", function(err) {
+      // if (err) throw err;
+      // console.log("Saved!");
+    });
+
+    for (let i = 27; i < menJacket.length; i++) {
+      let item = menJacket[i];
+      
+    }
+
+    let i = 0;
+    let j = 0;
+    while (i < menJacket.length) {
+      if(menJacket[i].boundingbox)
+      j++
+      i++
+    }
+    // console.log(menJacket[7]);
+    res.status(200).send(j + "/" + i);
   } catch (error) {
     console.log(error);
     res.status(200).send("Toang, đoc console ngay đi");
