@@ -54,6 +54,10 @@ async function udateImage(item, type) {
     if (type == "t shirt") {
       boundingBox = classifyTShirt(articles);
     }
+    if (type == "sweater") {
+      boundingBox = classifySweater(articles);
+    }
+
     if (boundingBox) {
       item.boundingbox = boundingBox;
       try {
@@ -65,6 +69,24 @@ async function udateImage(item, type) {
     }
   }
 }
+
+function classifySweater(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("sweater") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("shirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
+}
+
 
 function classifyTShirt(articles) {
   let result = null;

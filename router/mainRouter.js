@@ -1,6 +1,8 @@
 const express = require("express");
 const MenJacket = require("../models/menJacket");
 const MenShirt = require("../models/menShirt");
+const MenSweater = require("../models/mensweater");
+const MenJeans = require("../models/menJeans");
 const MenShorts = require("../models/menShorts");
 const MenTrouser = require("../models/menTrouser");
 const MenTShirt = require("../models/menTShirt");
@@ -64,20 +66,20 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menShirt = await MenShirt.find();
+    let menSweater = await MenSweater.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
     
-    console.log("Loaded ", menShirt.length);
+    console.log("Loaded ", menSweater.length);
 
     // node menJacket = [menJacket[300]];
 
-    let i = 290;
-    while (i < menShirt.length) {
+    let i = 0;
+    while (i < menSweater.length) {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menShirt, i, 20, 't shirt');
+      await process.runBatch(menSweater, i, 20, 'sweater');
       i += 20;
     }
     //console.log(menJacket[7]);
@@ -90,12 +92,12 @@ router.get("/createboundingbox", async (req, res) => {
 
 router.get('/cropall', async(req, res) => {
   try {
-    let path = 'image/men-jacket'
+    let path = 'image/men-shirts'
     res.status(200).send('OK');
     console.log('Running');
-    let menJacket = await MenJacket.find();
+    let menJacket = await MenShirt.find();
     console.log('Loaded', menJacket.length);
-    for (let i = 0; i < menJacket.length; i++) {
+    for (let i = 2780; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
           await images.downloadAsync(menJacket[i].image_urls[0], `${path}/${menJacket[i].id}.jpg`);
