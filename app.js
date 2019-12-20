@@ -7,7 +7,7 @@ const base64Img = require('base64-img');
 
 app.use(express.json())
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3002
 
 //Router
 app.use(mainRouter)

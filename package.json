@@ -12,11 +12,15 @@
   "dependencies": {
     "algorithmia": "^0.3.10",
     "base64-img": "^1.0.4",
+    "child_process": "^1.0.2",
     "env-cmd": "^8.0.2",
     "express": "^4.17.1",
     "mongoose": "^5.8.0",
     "multer": "^1.4.2",
+    "node-gyp": "^5.0.7",
     "nodemon": "^2.0.1",
+    "opencv4nodejs": "^5.5.0",
+    "request": "^2.88.0",
     "sharp": "^0.23.4"
   }
 }
