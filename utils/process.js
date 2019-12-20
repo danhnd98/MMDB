@@ -73,7 +73,7 @@ async function udateImage(item, type) {
 function classifySweater(articles) {
   let result = null;
   for (let i = 0; i < articles.length; i++) {
-    if (articles[i].article_name.indexOf("sweater") >= 0) {
+    if (articles[i].article_name.indexOf("sweat") >= 0) {
       result = articles[i].bounding_box;
       return result;
     }
