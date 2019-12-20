@@ -64,19 +64,20 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menJacket = await MenJacket.find();
+    let menShirt = await MenShirt.find();
+    // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
-    console.log("Loaded ", menJacket.length);
+    
+    console.log("Loaded ", menShirt.length);
 
     // node menJacket = [menJacket[300]];
-    fs.writeFile("log.txt", "", function(err) {
-      // if (err) throw err;
-      // console.log("Saved!");
-    });
 
-    let i = 410;
-    while (i < menJacket.length) {
-      await process.runBatch(menJacket, i, 20);
+    let i = 290;
+    while (i < menShirt.length) {
+      //for (let j = 0; j < 20; j++) {
+      //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
+      //}
+      await process.runBatch(menShirt, i, 20, 't shirt');
       i += 20;
     }
     //console.log(menJacket[7]);

@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 
 const menShirtSchema = new mongoose.Schema({
-    image : {
-        type : String,
-        required : false
+    images : {
+        type : mongoose.Schema.Types.Mixed
     },
     price_regular : {
         type: String
+    },
+    image_urls : {
+        type : mongoose.Schema.Types.Mixed
     },
     link : {
         type : String
@@ -16,9 +18,12 @@ const menShirtSchema = new mongoose.Schema({
     },
     title : {
         type : String
+    },
+    boundingbox : {
+        type : mongoose.Schema.Types.Mixed
     }
 })
 
-const MenShirt = new mongoose.model('MenShirt', menShirtSchema);
+const MenShirt = new mongoose.model('Men-Shirts', menShirtSchema);
 
 module.exports = MenShirt;
