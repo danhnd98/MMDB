@@ -27,6 +27,6 @@ const menTrouserSchema = new mongoose.Schema({
     }
 })
 
-const MenTrouser = new mongoose.model('MenTrouser', menTrouserSchema);
+const MenTrouser = new mongoose.model('Men-Trousers', menTrouserSchema);
 
 module.exports = MenTrouser;

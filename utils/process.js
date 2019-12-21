@@ -60,6 +60,10 @@ async function udateImage(item, type) {
     if (type == "shirt") {
       boundingBox = classifyShirt(articles);
     }
+    if (type == "trousers") {
+      boundingBox = classifyTrouser(articles);
+    }
+
     if (boundingBox) {
       item.boundingbox = boundingBox;
       try {
@@ -89,6 +93,16 @@ function classifySweater(articles) {
   return null;
 }
 
+function classifyTrouser(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("pant") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
+}
 
 function classifyTShirt(articles) {
   let result = null;
