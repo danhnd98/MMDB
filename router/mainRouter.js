@@ -75,12 +75,12 @@ router.get("/createboundingbox", async (req, res) => {
 
     // node menJacket = [menJacket[300]];
 
-    let i = 0;
+    let i = 1600;
     while (i < menSweater.length) {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menSweater, i, 20, 'sweater');
+      await process.runBatch(menSweater, i, 20, 'shirt');
       i += 20;
     }
     // console.log(menJacket[7]);
@@ -132,7 +132,7 @@ router.get('/cropall', async(req, res) => {
     console.log('Running');
     let menJacket = await MenSweater.find();
     console.log('Loaded', menJacket.length);
-    for (let i = 0; i < menJacket.length; i++) {
+    for (let i = 2587; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
           await images.downloadAsync(menJacket[i].image_urls[0], `${path}/${menJacket[i].id}.jpg`);
