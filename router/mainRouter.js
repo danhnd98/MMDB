@@ -75,7 +75,7 @@ router.get("/createboundingbox", async (req, res) => {
 
     // node menJacket = [menJacket[300]];
 
-    let i = 1600;
+    let i = 2560;
     while (i < menSweater.length) {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);

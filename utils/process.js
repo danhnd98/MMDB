@@ -4,7 +4,7 @@ var fs = require("fs");
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-      Algorithmia.client("sim8B+Cc52MvPiy0rtOwLLqIBBS1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
+      Algorithmia.client("simt0MbbS3adhvMAEp6yF+v63He1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
