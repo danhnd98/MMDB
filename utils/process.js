@@ -57,7 +57,9 @@ async function udateImage(item, type) {
     if (type == "sweater") {
       boundingBox = classifySweater(articles);
     }
-
+    if (type == "shirt") {
+      boundingBox = classifyShirt(articles);
+    }
     if (boundingBox) {
       item.boundingbox = boundingBox;
       try {
@@ -111,22 +113,36 @@ function classifyTShirt(articles) {
   return null;
 }
 
+function classifyShirt(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("shirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
+}
+
 function updateImagePromise(item, i, type) {
   return new Promise(async (resolve, reject) => {
     if (!item.boundingbox) {
       try {
         await udateImage(item, type);
         console.log("Processed", i, item.id);
-        resolve(item);
+        // resolve(item);
+        resolve(true);
       } catch (error) {
-        reject(item);
+        // reject(item);
+        resolve(true);
         fs.appendFile("log.txt", `${item.id}: ${error}`, function(err) {
           //if (err) throw err;
           // console.log("Updated!");
         });
       }
     } else {
-      resolve(item);
+      // resolve(item);
+      resolve(true);
       console.log("Skipped", i, item.id);
     }
   });
@@ -136,7 +152,7 @@ function updateImagePromise(item, i, type) {
 async function runBatch(arr, start, count, type) {
   let buf = arr.slice(start, start + count);
   return new Promise((resolve, reject) => {
-    Promise.allSettled(
+    Promise.all(
       buf.map((item, index) => updateImagePromise(item, index + start, type))
     ).then(result => {
       console.log("Batch result: ", result);

@@ -67,7 +67,7 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menSweater = await MenSweater.find();
+    let menSweater = await MenTShirt.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
     
@@ -127,12 +127,12 @@ router.get("/check", async (req, res) => {
 
 router.get('/cropall', async(req, res) => {
   try {
-    let path = 'image/men-shirts'
+    let path = 'image/men-sweater'
     res.status(200).send('OK');
     console.log('Running');
-    let menJacket = await MenShirt.find();
+    let menJacket = await MenSweater.find();
     console.log('Loaded', menJacket.length);
-    for (let i = 2780; i < menJacket.length; i++) {
+    for (let i = 0; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
           await images.downloadAsync(menJacket[i].image_urls[0], `${path}/${menJacket[i].id}.jpg`);
