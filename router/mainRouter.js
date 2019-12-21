@@ -67,7 +67,7 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menSweater = await MenTrouser.find();
+    let menSweater = await WomenJacket.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
     
@@ -80,7 +80,7 @@ router.get("/createboundingbox", async (req, res) => {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menSweater, i, 20, 'trousers');
+      await process.runBatch(menSweater, i, 20, 'jacket');
       i += 20;
     }
     // console.log(menJacket[7]);
@@ -127,12 +127,12 @@ router.get("/check", async (req, res) => {
 
 router.get('/cropall', async(req, res) => {
   try {
-    let path = 'image/men-sweater'
+    let path = 'image/men-tshirts'
     res.status(200).send('OK');
     console.log('Running');
-    let menJacket = await MenSweater.find();
+    let menJacket = await MenTShirt.find();
     console.log('Loaded', menJacket.length);
-    for (let i = 2587; i < menJacket.length; i++) {
+    for (let i = 2234; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
           await images.downloadAsync(menJacket[i].image_urls[0], `${path}/${menJacket[i].id}.jpg`);
