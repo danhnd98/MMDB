@@ -67,7 +67,7 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menSweater = await WomenJacket.find();
+    let menSweater = await WomenShirt.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
     
@@ -80,7 +80,7 @@ router.get("/createboundingbox", async (req, res) => {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menSweater, i, 20, 'jacket');
+      await process.runBatch(menSweater, i, 20, 't shirt');
       i += 20;
     }
     // console.log(menJacket[7]);
