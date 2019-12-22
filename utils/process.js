@@ -6,7 +6,7 @@ var fs = require("fs");
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-      Algorithmia.client("sim23arwXamQwQMA5p6W3YCXKRL1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
+      Algorithmia.client("simmCt2Qtdd0c3hsMRCyfKngFly1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
@@ -147,24 +147,21 @@ async function runBatch(arr, start, count, type) {
   });
 }
 
-var inputImage = async function (image64){
-  var input = {  
+let inputImage = function (image64){
+  let input = {  
     "image": image64,
     "model": "mid",
     "threshold": 0.3,
     "tags_only": true
   };
-  // await Algorithmia.client("simoKZmVTfKz00H8hT3PFwNDvV01")
-  //  .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
-  //  .pipe(input)
-  //  .then(function(response) {
-  //    console.log(response.get())
-  //    return response.get();
-  //  });
-
-   let data = await requestAlgorithia(input);
-   console.log(data)
-   return data
+  return new Promise((resolve, reject) => {
+   requestAlgorithia(input).then(data => {
+    console.log(data)
+    resolve(data);
+   }).catch(e => {
+     reject(e);
+   });
+  })
 }
 
 
