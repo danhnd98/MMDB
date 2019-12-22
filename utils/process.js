@@ -6,7 +6,11 @@ var fs = require("fs");
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
+<<<<<<< HEAD
       Algorithmia.client("simoKZmVTfKz00H8hT3PFwNDvV01")
+=======
+      Algorithmia.client("sim23arwXamQwQMA5p6W3YCXKRL1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
+>>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
@@ -23,7 +27,7 @@ function requestAlgorithia(input) {
   });
 }
 
-async function udateImage(item) {
+async function udateImage(item, type) {
   var input = {
     image: item.image_urls[0],
     model: "mid",
@@ -52,6 +56,7 @@ async function udateImage(item) {
         return item2.confidence - item1.confidence;
       });
       */
+<<<<<<< HEAD
     for (let i = 0; i < articles.length; i++) {
       if (articles[i].article_name.indexOf("short") >= 0) {
         item.boundingbox = articles[i].bounding_box;
@@ -62,16 +67,74 @@ async function udateImage(item) {
           throw error;
         }
         break;
+=======
+    let boundingBox;
+    if (type == "t shirt") {
+      boundingBox = classifyTShirt(articles);
+    }
+    if (type == "sweater") {
+      boundingBox = classifySweater(articles);
+    }
+
+    if (boundingBox) {
+      item.boundingbox = boundingBox;
+      try {
+        await item.save();
+      } catch (error) {
+        // console.log(error);
+        throw error;
+>>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
       }
     }
   }
 }
 
-function updateImagePromise(item, i) {
+function classifySweater(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("sweat") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("shirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
+}
+
+
+function classifyTShirt(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("t shirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("shirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("sweater") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
+}
+
+function updateImagePromise(item, i, type) {
   return new Promise(async (resolve, reject) => {
     if (!item.boundingbox) {
       try {
-        await udateImage(item);
+        await udateImage(item, type);
         console.log("Processed", i, item.id);
         resolve(item);
       } catch (error) {
@@ -89,11 +152,11 @@ function updateImagePromise(item, i) {
 }
 
 /* Call 20 request concurently */
-async function runBatch(arr, start, count) {
+async function runBatch(arr, start, count, type) {
   let buf = arr.slice(start, start + count);
   return new Promise((resolve, reject) => {
     Promise.allSettled(
-      buf.map((item, index) => updateImagePromise(item, index + start))
+      buf.map((item, index) => updateImagePromise(item, index + start, type))
     ).then(result => {
       console.log("Batch result: ", result);
       resolve();
@@ -101,6 +164,7 @@ async function runBatch(arr, start, count) {
   });
 }
 
+<<<<<<< HEAD
 var inputImage = async function (image64){
   var input = {  
     "image": image64,
@@ -123,3 +187,22 @@ var inputImage = async function (image64){
 
 
 module.exports = {runBatch, inputImage}
+=======
+function readJSONFile(filename) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filename, function(err, data) {
+      try {
+        resolve(JSON.parse(data));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+}
+
+function classifyGroup(name) {
+  if (name == "t shirt") return "t shirt";
+  if (name == "") return "";
+}
+module.exports = { runBatch, readJSONFile };
+>>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
