@@ -17,11 +17,10 @@ const multer = require("multer");
 const sharp = require("sharp");
 var fs = require("fs");
 var Algorithmia = require("algorithmia");
-const process = require('../utils/process');
-const images = require('../utils/images');
+const process = require("../utils/process");
+const images = require("../utils/images");
 var child_process = require("child_process");
 // const cv = require('opencv4nodejs');
-
 
 // var data = base64Img.base64Sync('./image/trungml.jpg');
 
@@ -67,20 +66,20 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menSweater = await WomenShirt.find();
+    let menSweater = await WomenIShirt.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
-    
+
     console.log("Loaded ", menSweater.length);
 
     // node menJacket = [menJacket[300]];
 
-    let i = 0;
+    let i = 1478;
     while (i < menSweater.length) {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menSweater, i, 20, 't shirt');
+      await process.runBatch(menSweater, i, 20, "shirt");
       i += 20;
     }
     // console.log(menJacket[7]);
@@ -107,15 +106,13 @@ router.get("/check", async (req, res) => {
 
     for (let i = 27; i < menJacket.length; i++) {
       let item = menJacket[i];
-      
     }
 
     let i = 0;
     let j = 0;
     while (i < menJacket.length) {
-      if(menJacket[i].boundingbox)
-      j++
-      i++
+      if (menJacket[i].boundingbox) j++;
+      i++;
     }
     // console.log(menJacket[7]);
     res.status(200).send(j + "/" + i);
@@ -125,41 +122,67 @@ router.get("/check", async (req, res) => {
   }
 });
 
-router.get('/cropall', async(req, res) => {
+router.get("/getcolor", async (req, res) => {
   try {
-    let path = 'image/men-tshirts'
-    res.status(200).send('OK');
-    console.log('Running');
-    let menJacket = await MenTShirt.find();
-    console.log('Loaded', menJacket.length);
-    for (let i = 2234; i < menJacket.length; i++) {
+    let trungML = await getColor("/home/kaito/Documents/Studies/Multimedia database/MMDB/image/trungml.jpg");
+    res.send(trungML);
+  } catch (e) {}
+});
+
+function getColor(path) {
+  return new Promise((resolve, reject) => {
+    let command = `python3 "./python/detectcolors.py" "${path}"`;
+    console.log(command);
+    let cmd = child_process.exec(command);
+    cmd.stdout.on("data", function(data) {
+      console.log(JSON.parse(data));
+      resolve(data);
+    });
+  });
+}
+
+router.get("/cropall", async (req, res) => {
+  try {
+    let path = "image/women-shirts";
+    res.status(200).send("OK");
+    console.log("Running");
+    let menJacket = await WomenShirt.find();
+    console.log("Loaded", menJacket.length);
+    for (let i = 0; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
-          await images.downloadAsync(menJacket[i].image_urls[0], `${path}/${menJacket[i].id}.jpg`);
+          await images.downloadAsync(
+            menJacket[i].image_urls[0],
+            `${path}/${menJacket[i].id}.jpg`
+          );
           let boundingBox = menJacket[i].boundingbox;
           /*
           const img = cv.imread(`${path}/${menJacket[i].id}.jpg`);
           let mat = img.getRegion(new cv.Rect())
           mat = cv.imwrite(`${path}/${menJacket[i].id}-cropped.jpg`, mat);
           */
-          let command = `python "/home/kaito/Documents/Studies/Multimedia database/MMDB/router/cropImage.py" "/home/kaito/Documents/Studies/Multimedia database/MMDB/${path}/${menJacket[i].id}.jpg" "/home/kaito/Documents/Studies/Multimedia database/MMDB/${path}/${menJacket[i].id}-cropped.jpg" ${boundingBox.x0} ${boundingBox.y0} ${boundingBox.x1 - boundingBox.x0} ${boundingBox.y1 - boundingBox.y0}`
+          let command = `python "/home/kaito/Documents/Studies/Multimedia database/MMDB/router/cropImage.py" "/home/kaito/Documents/Studies/Multimedia database/MMDB/${path}/${
+            menJacket[i].id
+          }.jpg" "/home/kaito/Documents/Studies/Multimedia database/MMDB/${path}/${
+            menJacket[i].id
+          }-cropped.jpg" ${boundingBox.x0} ${boundingBox.y0} ${boundingBox.x1 -
+            boundingBox.x0} ${boundingBox.y1 - boundingBox.y0}`;
           console.log(command);
-         let cmd = child_process.exec(command);
-          console.log('Downloaded', i, menJacket[i].id);
-          cmd.stdout.on('data', function(data) { 
-            console.log(data.toString())
-        } ) 
-        } catch(e) {
+          let cmd = child_process.exec(command);
+          console.log("Downloaded", i, menJacket[i].id);
+          cmd.stdout.on("data", function(data) {
+            console.log(data.toString());
+          });
+        } catch (e) {
           console.error(e);
-          console.log('Rejected', i, menJacket[i].id);
+          console.log("Rejected", i, menJacket[i].id);
         }
       } else {
-        console.log('Skipped', i, menJacket[i].id);
+        console.log("Skipped", i, menJacket[i].id);
       }
     }
-    
   } catch {
-    res.status(200).send('Not ok');
+    res.status(200).send("Not ok");
   }
-})
+});
 module.exports = router;

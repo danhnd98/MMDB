@@ -1,10 +1,61 @@
 var Algorithmia = require("algorithmia");
 var fs = require("fs");
 
+const CLASSES = {'top handle bag': null,
+'t shirt': 't shirt', // -> t shirt
+'jewelry': null,
+'boots': null,
+'sunglasses': null,
+'jeans': 'jeans',
+'sweater': 'sweater', // -> shirt
+'tank top': 't shirt', 
+'skirt': 'dress',
+'sandals': null,
+'leggings': null,
+'button down shirt': 'shirt', // -> shirt
+'pants casual': 'trousers',
+'heels pumps or wedges': null,
+'lingerie': null,
+'blouse': null,
+'lightweight jacket': 'jacket',
+'casual dress': 'dress',
+'winter jacket': 'jacket',
+'formal dress': 'dress',
+'watches': null,
+'hat': null,
+'vest': null,
+'sneakers': null,
+'shoulder bag': null,
+'flats': null,
+'overall': null,
+'sweatpants': 'trousers',
+'shorts': 'shorts',
+'rompers': null,
+'pants suit formal': 'trousers',
+'glasses': null,
+'clutches': null,
+'socks': null,
+'backpack or messenger bag': null,
+'jumpsuit': null,
+'running shoes': null,
+'blazer': null,
+'tunic': 'dress',
+'hosiery': null,
+'denim jacket': 'jacket',
+'belts': null,
+'leather jacket': 'jacket',
+'trenchcoat': null,
+'headwrap': null,
+'sweater dress': 'dress',
+'sweatshirt': 'sweater',
+'gloves': null,
+'underwear': null};
+
+
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-      Algorithmia.client("simOaIroTfR1QG/lHV/VhcmX9Au1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
+      Algorithmia.client("simhV8Ty/C2bnYtRr58KCXBLByH1") // other key: simmCt2Qtdd0c3hsMRCyfKngFly1
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
@@ -66,6 +117,9 @@ async function udateImage(item, type) {
     if (type == "jacket") {
       boundingBox = classifyJacket(articles);
     }
+    if (type == "dress") {
+      boundingBox = classifyDress(articles);
+    }
     if (boundingBox) {
       item.boundingbox = boundingBox;
       try {
@@ -76,6 +130,29 @@ async function udateImage(item, type) {
       }
     }
   }
+}
+
+function classifyDress(articles) {
+  let result = null;
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("dress") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("skirt") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  for (let i = 0; i < articles.length; i++) {
+    if (articles[i].article_name.indexOf("tunic") >= 0) {
+      result = articles[i].bounding_box;
+      return result;
+    }
+  }
+  return null;
 }
 
 function classifySweater(articles) {
@@ -201,7 +278,7 @@ function readJSONFile(filename) {
 }
 
 function classifyGroup(name) {
-  if (name == "t shirt") return "t shirt";
-  if (name == "") return "";
+  return CLASSES[name];
 }
+
 module.exports = { runBatch, readJSONFile };
