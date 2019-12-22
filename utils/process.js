@@ -6,11 +6,7 @@ var fs = require("fs");
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-<<<<<<< HEAD
-      Algorithmia.client("simoKZmVTfKz00H8hT3PFwNDvV01")
-=======
       Algorithmia.client("sim23arwXamQwQMA5p6W3YCXKRL1") // other key: sim+8S29FhplE+IO3tKbHuMIg3i1
->>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
@@ -56,18 +52,6 @@ async function udateImage(item, type) {
         return item2.confidence - item1.confidence;
       });
       */
-<<<<<<< HEAD
-    for (let i = 0; i < articles.length; i++) {
-      if (articles[i].article_name.indexOf("short") >= 0) {
-        item.boundingbox = articles[i].bounding_box;
-        try {
-          await item.save();
-        } catch (error) {
-          // console.log(error);
-          throw error;
-        }
-        break;
-=======
     let boundingBox;
     if (type == "t shirt") {
       boundingBox = classifyTShirt(articles);
@@ -83,7 +67,6 @@ async function udateImage(item, type) {
       } catch (error) {
         // console.log(error);
         throw error;
->>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
       }
     }
   }
@@ -164,7 +147,6 @@ async function runBatch(arr, start, count, type) {
   });
 }
 
-<<<<<<< HEAD
 var inputImage = async function (image64){
   var input = {  
     "image": image64,
@@ -186,8 +168,7 @@ var inputImage = async function (image64){
 }
 
 
-module.exports = {runBatch, inputImage}
-=======
+// module.exports = {runBatch, inputImage}
 function readJSONFile(filename) {
   return new Promise((resolve, reject) => {
     fs.readFile(filename, function(err, data) {
@@ -204,5 +185,4 @@ function classifyGroup(name) {
   if (name == "t shirt") return "t shirt";
   if (name == "") return "";
 }
-module.exports = { runBatch, readJSONFile };
->>>>>>> 51dfbc3e49e7cef5619296fd38b4c8be5b8bfc8a
+module.exports = { runBatch, inputImage,readJSONFile };
