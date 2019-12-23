@@ -55,7 +55,7 @@ const CLASSES = {'top handle bag': null,
 function requestAlgorithia(input) {
   return new Promise((resolve, reject) => {
     try {
-      Algorithmia.client("simXkQDr3aI3zppbMb3z6aIdZlw1") // other key: simmCt2Qtdd0c3hsMRCyfKngFly1
+      Algorithmia.client("simDkZOqRn+oDQrOQvUN7QOcfo81") // other key: simmCt2Qtdd0c3hsMRCyfKngFly1
         .algo("algorithmiahq/DeepFashion/1.3.0?timeout=3000") // timeout is optional
         .pipe(input)
         .then(response => {
