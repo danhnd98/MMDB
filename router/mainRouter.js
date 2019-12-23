@@ -66,7 +66,7 @@ router.get("/createboundingbox", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menSweater = await WomenIShirt.find();
+    let menSweater = await WomenDress.find();
     // let menShirt = await process.readJSONFile('menshirt.json');
     console.log("load done!");
 
@@ -74,12 +74,12 @@ router.get("/createboundingbox", async (req, res) => {
 
     // node menJacket = [menJacket[300]];
 
-    let i = 1478;
+    let i = 0;
     while (i < menSweater.length) {
       //for (let j = 0; j < 20; j++) {
       //  menShirt[i] = await MenShirt.findById(menShirt[i+j]._id);
       //}
-      await process.runBatch(menSweater, i, 20, "shirt");
+      await process.runBatch(menSweater, i, 20, "dress");
       i += 20;
     }
     // console.log(menJacket[7]);
@@ -94,7 +94,7 @@ router.get("/check", async (req, res) => {
   let cate = req.query.Category;
   console.log("Run");
   try {
-    let menJacket = await MenJean.find();
+    let menJacket = await Wom.find();
     console.log("load done!");
     console.log("Loaded ", menJacket.length);
 
@@ -143,12 +143,12 @@ function getColor(path) {
 
 router.get("/cropall", async (req, res) => {
   try {
-    let path = "image/women-shirts";
+    let path = "image/women-t-shirts";
     res.status(200).send("OK");
     console.log("Running");
-    let menJacket = await WomenShirt.find();
+    let menJacket = await WomenIShirt.find();
     console.log("Loaded", menJacket.length);
-    for (let i = 0; i < menJacket.length; i++) {
+    for (let i = 1832; i < menJacket.length; i++) {
       if (menJacket[i].boundingbox) {
         try {
           await images.downloadAsync(
