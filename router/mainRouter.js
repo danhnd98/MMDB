@@ -146,54 +146,55 @@ router.post("/uploadimage1", async (req, res) => {
   const expectedList = [];
   // const color = [240, 240, 240];
   // listDBCollecion = ["MenShirt"];
-  if (listDBCollecion.length) {
-    await listDBCollecion.forEach(async item => {
-      let dbCollection = item;
-      if (dbCollection == "MenJacket") {
-        let listExpectedIem = await loadExpectImage(MenJacket, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenJean") {
-        let listExpectedIem = await loadExpectImage(MenJean, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenShirt") {
-        let listExpectedIem = await loadExpectImage(MenShirt, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenTrouser") {
-        let listExpectedIem = await loadExpectImage(MenTrouser, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenTShirt") {
-        let listExpectedIem = await loadExpectImage(MenTShirt, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenShort") {
-        let listExpectedIem = await loadExpectImage(MenShort, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "MenSweater") {
-        let listExpectedIem = await loadExpectImage(MenSweater, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "WomenTShirt") {
-        let listExpectedIem = await loadExpectImage(WomenTShirt, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "WomenDress") {
-        let listExpectedIem = await loadExpectImage(WomenDress, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "WomenShirt") {
-        let listExpectedIem = await loadExpectImage(WomenShirt, color);
-        expectedList.push(listExpectedIem);
-      }
-      if (dbCollection == "WomenJacket") {
-        let listExpectedIem = await loadExpectImage(WomenJacket, color);
-        expectedList.push(listExpectedIem);
-      }
-    });
+
+  // FOREACH ko dung dc await dau nhe
+  
+  for (let i = 0; i < listDBCollecion.length; i++) {
+    let dbCollection = listDBCollecion[i];
+    if (dbCollection == "MenJacket") {
+      let listExpectedIem = await loadExpectImage(MenJacket, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenJean") {
+      let listExpectedIem = await loadExpectImage(MenJean, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenShirt") {
+      let listExpectedIem = await loadExpectImage(MenShirt, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenTrouser") {
+      let listExpectedIem = await loadExpectImage(MenTrouser, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenTShirt") {
+      let listExpectedIem = await loadExpectImage(MenTShirt, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenShort") {
+      let listExpectedIem = await loadExpectImage(MenShort, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "MenSweater") {
+      let listExpectedIem = await loadExpectImage(MenSweater, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "WomenTShirt") {
+      let listExpectedIem = await loadExpectImage(WomenTShirt, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "WomenDress") {
+      let listExpectedIem = await loadExpectImage(WomenDress, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "WomenShirt") {
+      let listExpectedIem = await loadExpectImage(WomenShirt, color);
+      expectedList.push(listExpectedIem);
+    }
+    if (dbCollection == "WomenJacket") {
+      let listExpectedIem = await loadExpectImage(WomenJacket, color);
+      expectedList.push(listExpectedIem);
+    }
   }
 
   console.log(expectedList);
