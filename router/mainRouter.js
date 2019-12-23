@@ -7,6 +7,7 @@ const MenJeans = require("../models/menJeans");
 const MenShorts = require("../models/menShorts");
 const MenTrouser = require("../models/menTrouser");
 const MenTShirt = require("../models/menTShirt");
+var distanceSquared = require('euclidean-distance/squared')
 const Men = require("../models/men");
 const WomenJacket = require("../models/womenJacket");
 const WomenDress = require("../models/womenDress");
@@ -259,53 +260,62 @@ router.get("/check", async (req, res) => {
 });
 
 async function loadExpectImage(collection, color) {
-  let all = await collection.find();
-  return getList(color, all);
+  let all = await collection.find({}, {color: 1});
+  return await getList(color, all, collection);
 }
 
 const loopTest = [10, 20, 30, 40, 50];
 
+/*
 const getListByColor = (listItem, color, range) => {
   let expectedList = listItem.filter(item => {
     const currentColor = item.color;
     let isExpectItem = true;
-    for (let i = 0; i <= 2; i++) {
-      try {
-        if (
-          currentColor[i] + range < color[i] ||
-          currentColor[i] - range > color[i]
-        ) {
-          isExpectItem = false;
-          break;
-        }
-      }
-      catch (e) {
-        console.log('Error on: ', currentColor, color);
-        isExpectItem = false;
-      }
+    try {
+      isExpectItem =  <= range;
+    }  catch(e) {
+      isExpectItem = false;
     }
     return isExpectItem;
   })
   
   return expectedList;
 };
+*/
 
-const getList = (color, listItem) => {
+const getList = async (color, listItem, collection) => {
   let list = [];
   let start = new Date();
+  listItem = listItem.map(item => 
+   Object.assign(item, {distance: Math.max(Math.max(Math.abs(item.color[0] - color[0]), Math.abs(item.color[1] - color[1])), Math.abs(item.color[2] - color[2]))})
+  )
+  
+  listItem.sort((a, b) => a.distance - b.distance);
+
+  /*
   for (let i = 10; i <= 30; i += 5) {
-    let list = getListByColor(listItem, color, i);
+    let list = listItem.filter(item => item.distance <= i)
     if (list.length >= 10) {
       console.log(list);
       console.log('Range', i);
       let end = new Date();
       console.log(end - start);
+
+
+      list.sort((a, b) => distanceSquared(b.color, color) - distanceSquared(a.color, color));
       return list;
     } else {
       list = [];
     }
   }
   
+  */
+  listItem = listItem.filter((s, index) => index < 10)
+  listItem.sort((a, b) => distanceSquared(a.color, color) - distanceSquared(b.color, color));
+
+  listItem = await Promise.all(listItem.map(item => collection.findById(item._id, {link: 1, title: 1, final_price: 1, images: 1})))
+  return listItem;
+
   console.log("No");
   return list;
 };

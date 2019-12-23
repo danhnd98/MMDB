@@ -12,9 +12,10 @@
   "dependencies": {
     "algorithmia": "^0.3.10",
     "base64-img": "^1.0.4",
-    "cors": "^2.8.5",
     "child_process": "^1.0.2",
+    "cors": "^2.8.5",
     "env-cmd": "^8.0.2",
+    "euclidean-distance": "^1.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.8.0",
     "multer": "^1.4.2",
