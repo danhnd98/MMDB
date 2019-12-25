@@ -73,6 +73,8 @@ router.post("/uploadimage", async (req, res) => {
 function getColor(base64) {
   // save image
   let timeStamp = new Date().getTime();
+  console.log('Base64', base64.slice(0, 20));
+
   let filePath = base64Img.imgSync(base64, "./queries/", timeStamp, ()=>{
     console.log("Done")
     //resolve(temp + '.jpg');
@@ -105,7 +107,9 @@ function executeImage(image) {
 }
 
 router.post("/uploadimage1", async (req, res) => {
+  console.log(req.body);
   let image = req.body.image;
+  console.log('Image:', image.slice(0, 40));
   let gender = req.body.gender;
   //0 = MEN, 1 = WOMEN
 
@@ -144,7 +148,7 @@ router.post("/uploadimage1", async (req, res) => {
 
   const loopTest = [10, 20, 30, 40, 50];
 
-  const expectedList = [];
+  let expectedList = [];
   // const color = [240, 240, 240];
   // listDBCollecion = ["MenShirt"];
 
@@ -154,47 +158,47 @@ router.post("/uploadimage1", async (req, res) => {
     let dbCollection = listDBCollecion[i];
     if (dbCollection == "MenJacket") {
       let listExpectedIem = await loadExpectImage(MenJacket, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenJean") {
       let listExpectedIem = await loadExpectImage(MenJean, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenShirt") {
       let listExpectedIem = await loadExpectImage(MenShirt, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenTrouser") {
       let listExpectedIem = await loadExpectImage(MenTrouser, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenTShirt") {
       let listExpectedIem = await loadExpectImage(MenTShirt, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenShort") {
       let listExpectedIem = await loadExpectImage(MenShort, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "MenSweater") {
       let listExpectedIem = await loadExpectImage(MenSweater, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "WomenTShirt") {
       let listExpectedIem = await loadExpectImage(WomenTShirt, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "WomenDress") {
       let listExpectedIem = await loadExpectImage(WomenDress, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "WomenShirt") {
       let listExpectedIem = await loadExpectImage(WomenShirt, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
     if (dbCollection == "WomenJacket") {
       let listExpectedIem = await loadExpectImage(WomenJacket, color);
-      expectedList.push(listExpectedIem);
+      expectedList = expectedList.concat(listExpectedIem);
     }
   }
 
